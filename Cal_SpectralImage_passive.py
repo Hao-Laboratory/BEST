@@ -35,7 +35,7 @@ net = torch.load(net_path)
 for i in range(0, 480):
     for j in range(0, 640):
         tf = image_data[i, j, :]
-        #tf = tf - min(tf)
+        tf = tf - min(tf)
         maxtf = max(tf)
         tf = tf/maxtf
         image_data_max[i, j] = maxtf
