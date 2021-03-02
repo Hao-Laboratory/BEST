@@ -16,8 +16,8 @@ S_Filter = GetSpecData(WL, 'Spec_BPFilter.xlsx', 1);%spectrum of the bandpass fi
 filter=FilteredLEDSpec.*S_CCD.*S_Lens.*S_Filter;%the overall spectra
 filter = filter/max(max(filter));
 
-load('data/Specs_general.mat')
-trainingDatasize = 400000;
+load('data/Specs_precise.mat')
+trainingDatasize = 200000;
 testingDatasize = 100000;
 sizeofDataset = trainingDatasize + testingDatasize;
 sigma = 0.05;%random noise level
@@ -35,5 +35,5 @@ maxtfs=max(tfs_norm2);
 tfs_norm2=tfs_norm2./maxtfs;
 Specs_norm2=Specs_norm./maxtfs;
 
-save('data/Specs_general_active.mat', 'Specs_norm2', '-v7.3')
-save('data/tfs_general_active.mat', 'tfs_norm2', '-v7.3')
+save('data/Specs_precise_active.mat', 'Specs_norm2', '-v7.3')
+save('data/tfs_precise_active.mat', 'tfs_norm2', '-v7.3')

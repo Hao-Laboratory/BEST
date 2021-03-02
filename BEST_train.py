@@ -34,9 +34,9 @@ WL = np.arange(StartWL, EndWL, Resolution)
 SpectralSliceNum = WL.size
 LayerNum = 500
 
-path_data = 'H:/zwy/torch/data/'  # 远程服务器的数据集路径
-name_dataset = 'Specs_mix003.mat'
-name_tfs = 'tfs_mix003.mat'
+path_data = 'E:/BEST/data/'  # 远程服务器的数据集路径
+name_dataset = 'Specs_general_passive.mat'
+name_tfs = 'tfs_general_passive.mat'
 
 specs_train = torch.zeros([TrainingDataSize, SpectralSliceNum], device=device_data, dtype=dtype)
 tf_train = torch.zeros([TrainingDataSize, TFNum], device=device_data, dtype=dtype)
@@ -83,7 +83,7 @@ LossFcn = hsnetLoss()
 for k in range(len(lr)):
 
     folder_name = time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '_TFNum=' + str(TFNum) + '_lr=' + str(lr)
-    path = 'nets/hsnet/' + folder_name + '/'
+    path = 'nets/' + folder_name + '/'
 
     hsnet = nn.Sequential()
 
@@ -112,10 +112,9 @@ for k in range(len(lr)):
     loss_test = torch.zeros(math.ceil(EpochNum / TestInterval))
 
     os.makedirs(path, exist_ok=True)
-    os.makedirs(path + 'curves_evolution/', exist_ok=True)
     log_file = open(path + 'TrainingLog.txt', 'w+')
     print('TrainingDataSize: ', TrainingDataSize, '| LayerNum:', LayerNum,
-          '| Dataset:', name_dataset,'| tfsset:', name_tfs,, file=log_file)
+          '| Dataset:', name_dataset,'| tfsset:', name_tfs, file=log_file)
 
     time_start = time.time()
     time_epoch0 = time_start

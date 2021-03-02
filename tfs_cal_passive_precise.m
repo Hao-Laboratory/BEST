@@ -5,7 +5,7 @@ TFnum = 16;
 
 WL = startWL:resolution:endWL;
 
-FilteredLEDSpec = GetSpecData(WL, 'Spec_Array.xlsx', TFnum);%calibrated spectra of light sorce array
+FilteredLEDSpec = GetSpecData(WL, 'Spec_Filters16.xlsx', TFnum);%calibrated spectra of filter array
 S_CCD = GetSpecData(WL, 'Spec_VH310G2.xlsx', 1);  % quantom efficiency of the camera VH310G2
 k=WL.^-1;
 S_CCD=S_CCD./k';
@@ -16,8 +16,8 @@ S_Filter = GetSpecData(WL, 'Spec_BPFilter.xlsx', 1);%spectrum of the bandpass fi
 filter=FilteredLEDSpec.*S_CCD.*S_Lens.*S_Filter;%the overall spectra
 filter = filter/max(max(filter));
 
-load('data/Specs_general.mat')
-trainingDatasize = 400000;
+load('data/Specs_precise.mat')
+trainingDatasize = 200000;
 testingDatasize = 100000;
 sizeofDataset = trainingDatasize + testingDatasize;
 sigma = 0.05;%random noise level
@@ -30,10 +30,11 @@ tfs_norm=tfs_norm./max(tfs_norm);%tfs normalization
 Specs_norm=Specs_norm./max(tfs_norm);%scaling the spectra and the tfs at the same level
 
 tfs_norm2 = tfs_norm+noise;%add noise
-tfs_norm2(tfs_norm2<0) = 0;
+tfs_norm2(tfs_norm2<0)=0;
+tfs_norm2 = tfs_norm2 - min(tfs_norm2);%input signal whitening
 maxtfs=max(tfs_norm2);
-tfs_norm2=tfs_norm2./maxtfs;
-Specs_norm2=Specs_norm./maxtfs;
+tfs_norm2=tfs_norm2./maxtfs;%tfs normalization
+Specs_norm2=Specs_norm./maxtfs;%scaling the spectra and the tfs at the same level
 
-save('data/Specs_general_active.mat', 'Specs_norm2', '-v7.3')
-save('data/tfs_general_active.mat', 'tfs_norm2', '-v7.3')
+save('data/Specs_precise_passive.mat', 'Specs_norm2', '-v7.3')
+save('data/tfs_precise_passive.mat', 'tfs_norm2', '-v7.3')
